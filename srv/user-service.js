@@ -1,16 +1,14 @@
-const SapCfAxios = require('sap-cf-axios').default;
-const axios = SapCfAxios('AuthAndTrustManagement');
+const core = require('@sap-cloud-sdk/core')
 
 module.exports = async function () {
     this.on('loadUsers', async(req) => {
         const { Users } = cds.entities
-        const response = await axios({
+        const response = await core.executeHttpRequest({ destinationName: 'AuthAndTrustManagement'},{
             method: 'GET',
-            url: '/Users',
-            headers: {
-                accept: 'application/json'
-            }
+            url: '/Users'
         })
+
+        console.log(response.data.resources)
 
         const users = response.data.resources.map((user)=> {
             return {
