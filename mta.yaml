@@ -29,6 +29,7 @@ modules:
     - name: user-roles-db
     - name: user-roles_destination
     - name: user-roles_uaa
+    - name: job-scheduler
    provides:
     - name: srv-api      # required by consumers of CAP services (e.g. approuter)
       properties:
@@ -73,6 +74,9 @@ resources:
    parameters:
      path: ./xs-security.json
      service-plan: application
-     service: xsuaa        
+     service: xsuaa      
+
+ - name: job-scheduler
+   type: org.cloudfoundry.existing-service
 
 

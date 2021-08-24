@@ -8,8 +8,11 @@
     "dependencies": {
         "@sap-cloud-sdk/core": "^1.48.0",
         "@sap/cds": "^5",
+        "@sap/xsenv": "^3.1.1",
+        "@sap/xssec": "^3.2.3",
         "express": "^4",
-        "hdb": "^0.18.3"
+        "hdb": "^0.18.3",
+        "passport": "^0.4.1"
     },
     "devDependencies": {
         "sqlite3": "^5.0.2"

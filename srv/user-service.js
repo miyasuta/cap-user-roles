@@ -2,13 +2,12 @@ const core = require('@sap-cloud-sdk/core')
 
 module.exports = async function () {
     this.on('loadUsers', async(req) => {
+        console.log('authorization ===>', req.headers.authorization)
         const { Users } = cds.entities
         const response = await core.executeHttpRequest({ destinationName: 'AuthAndTrustManagement'},{
             method: 'GET',
             url: '/Users'
         })
-
-        console.log(response.data.resources)
 
         const users = response.data.resources.map((user)=> {
             return {
