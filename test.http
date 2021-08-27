@@ -1,5 +1,16 @@
 POST http://localhost:4004/user/loadUsers
 Content-Type: application/json
 ###
-POST b736177ctrial-dev-user-roles-srv.cfapps.eu10.hana.ondemand.com/user/loadUsers
+POST https://b736177ctrial-dev-user-roles-srv.cfapps.eu10.hana.ondemand.com/user/loadUsers
 Content-Type: application/json
+
+###
+POST http://localhost:4004/user/loadRoleCollections
+Content-Type: application/json
+
+###
+POST http://localhost:4004/user/loadRoles
+Content-Type: application/json
+
+###
+http://localhost:4004/user/userHasScope(userId='mio.fujita.01@gmail.com',scope='cap-launchpad-auth!t54386.admin')
