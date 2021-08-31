@@ -1,5 +1,6 @@
 using { miyasuta.users as db } from '../db/schema';
 
+@requires: ['authenticated-user','system-user']
 service UserService {
     entity Users as projection on db.Users
     entity RoleCollections as projection on db.RoleCollections
@@ -11,5 +12,10 @@ service UserService {
     action loadRoles() returns String;
 
     //for scope, prefix(appId) is required
-    function userHasScope(userId:String, scope:String) returns Boolean;
+    type HasScope {
+        userId: String;
+        scope: String;
+        hasScope: Boolean;
+    }
+    function userHasScope(userId:String, scope:String) returns HasScope;
 }

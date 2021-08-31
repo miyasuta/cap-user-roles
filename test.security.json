@@ -1,0 +1,11 @@
+{
+    "xsappname": "user-roles",
+    "tenant-mode": "dedicated",
+    "scopes": [{
+      "name": "$XSAPPNAME.user-roles-scope",
+      "grant-as-authority-to-apps" : [ "$XSAPPNAME(application, wf-cap)"]
+    }],
+    "attributes": [],
+    "role-templates": []
+  }
+  

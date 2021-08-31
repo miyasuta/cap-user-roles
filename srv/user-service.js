@@ -111,28 +111,38 @@ module.exports = async function () {
         const { Users, RoleCollectionToScopes } = cds.entities
         const user = await SELECT.one.from(Users).columns `{id}` 
                         .where({userName: userId})
-        if (!user) {
-            req.error({
-                message: 'User does not exist in subaccount'
-            })
+        if (!user || user.id === null) {
+            throw new Error(`User ${userId} does not exist in subaccount`)
         }
 
         //step2. get role collections the user is assined
-        const response = await core.executeHttpRequest({ destinationName: 'AuthAndTrustManagement'},{
-            method: 'GET',
-            url: `/Users/${user.id}`
-        })
+        try {
+            const response = await core.executeHttpRequest({ destinationName: 'AuthAndTrustManagement'},{
+                method: 'GET',
+                url: `/Users/${user.id}`
+            })
+    
+            const groups = response.data.groups.map(group => group.value)
 
-        const groups = response.data.groups.map(group => group.value)
-        console.log(groups)
-
-        //step3. check scope
-        const { count } = await SELECT.one.from(RoleCollectionToScopes).columns `{count(scopeName) as count}`
-                            // .where `${whereClause}`
-                            .where `name in ${groups} and scopeName = ${scope}`
-        console.log(`count: `, count)
-
-        const result = count > 0 ? true : false       
-        return result
+            let count = 0
+            if (groups.length < 1) {
+                count = 0
+            } else {
+                //step3. check scope
+                const { scopeCount } = await SELECT.one.from(RoleCollectionToScopes).columns `{count(scopeName) as scopeCount}`
+                                    .where `name in ${groups} and scopeName = ${scope}`
+                console.log(`count: `, scopeCount)
+                count = scopeCount
+            }
+     
+            const result = {
+                userId: userId,
+                scope: scope,
+                hasScope: count > 0 ? true : false
+            }    
+            return result            
+        } catch (err) {
+            req.error(err)
+        }
     })
 }
